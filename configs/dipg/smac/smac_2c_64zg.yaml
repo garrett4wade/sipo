@@ -1,0 +1,58 @@
+# cent state 10
+base:
+  num_train_envs: 16
+  n_rollout_threads: 16
+  num_eval_envs: 8
+  eval_episode_length: 200
+  eval_interval: 50
+  n_eval_rollout_threads: 8
+  num_env_splits: 2
+
+  episode_length: 400
+  num_env_steps: 10.0e+6
+  ppo_epoch: 10
+
+  use_wandb: False
+  wandb_project: DIPG-smac
+  wandb_group: 2c_64zg
+
+  # seed should not be changed throughout iterations
+  seed: 1
+  seed_specify: True
+
+  # diversity algorithm parameters
+  rbf_gamma: 2.0e-2 # if changed, threshold should be probably changed together
+  warmup_fraction: 0.05
+  mmd_alpha: 0.1
+
+  n_iterations: 4
+  inherit_policy: False
+  # archive_policy_dirs:
+  #   - results/2_64/check/1/run1/iter0/models/model.pt
+  #   - results/2_64/check/1/run6/iter1/models/model.pt
+  #   - results/2_64/check/1/run7/iter2/models/model.pt
+  #   - results/2_64/check/1/run7/iter3/models/model.pt
+  # archive_traj_dirs:
+  #   - results/2_64/check/1/run1/iter0/models/data.traj
+  #   - results/2_64/check/1/run6/iter1/models/data.traj
+  #   - results/2_64/check/1/run7/iter2/models/data.traj
+  #   - results/2_64/check/1/run7/iter3/models/data.traj
+
+policy:
+  type: actor-critic
+  args:
+    hidden_dim: 64
+    num_dense_layers: 2
+    num_rnn_layers: 1
+
+environment:
+  type: smac
+  args:
+    base:
+      map_name: 2c_vs_64zg
+      frame_stack: True
+      num_stack: 4
+      stack_key: cent_state
+    eval:
+      save_replay: False
+      replay_dir: /home/fw/smac_replays_iclr2023/2c_vs_64zg/

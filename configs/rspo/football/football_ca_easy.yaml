@@ -1,0 +1,77 @@
+# cent state stack 4 = 184
+base:
+  num_train_envs: 64
+  n_rollout_threads: 32
+  num_eval_envs: 16
+  eval_episode_length: 100
+  eval_interval: 50
+  n_eval_rollout_threads: 16
+  num_env_splits: 2
+
+  episode_length: 150
+  num_env_steps: 25.0e+6
+  ppo_epoch: 10
+  num_mini_batch: 2
+
+  use_wandb: False
+  wandb_project: rspo-football
+  wandb_group: ca-easy
+
+  # seed should not be changed throughout iterations
+  seed: 1
+  seed_specify: True
+
+  # diversity algorithm parameters
+  threshold_annealing_schedule: linear
+  use_reward_predictor: True
+  auto_alpha: 0.3
+  likelihood_alpha: 0.25
+  likelihood_threshold: 10.0
+  prediction_reward_alpha: 0.0
+  exploration_reward_alpha: 1.0
+  reward_prediction_multiplier: 1.0
+  exploration_threshold: 0.6
+
+  n_iterations: 4
+  inherit_policy: False
+  # archive_policy_dirs:
+  #   - results/ca_easy/check/1/run1/iter0/models/model.pt
+    # # seed 2
+    # - results/ca_easy/check/2/run1/iter0/models/model.pt
+    # # seed 3
+    # - results/ca_easy/check/3/run1/iter0/models/model.pt
+  # archive_traj_dirs:
+  #   - results/ca_easy/check/1/run1/iter0/models/data.traj
+    # # seed 2
+    # - results/ca_easy/check/2/run1/iter0/models/data.traj
+    # # seed 3
+    # - results/ca_easy/check/3/run1/iter0/models/data.traj
+
+policy:
+  type: rspo
+  args:
+    hidden_dim: 64
+    num_dense_layers: 2
+    num_rnn_layers: 1
+
+environment:
+  type: football
+  args:
+    base:
+      env_name: academy_counterattack_easy
+      share_reward: True
+    train:
+      rewards: scoring,checkpoints
+    eval:
+      rewards: scoring
+    render:
+      rewards: scoring
+      write_full_episode_dumps: True
+      write_video: True
+      logdir: results/football/render
+      other_config_options:
+        video_format: avi
+        render_resolution_x: 960
+        render_resolution_y: 540
+        video_quality_level: 2
+        display_game_stats: False

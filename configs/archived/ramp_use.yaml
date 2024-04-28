@@ -1,0 +1,39 @@
+base:
+  num_train_envs: 128
+  n_rollout_threads: 64
+  num_eval_envs: 32
+  eval_episode_length: 80
+  eval_interval: 50
+  n_eval_rollout_threads: 16
+  num_env_splits: 2
+
+  episode_length: 80
+  num_env_steps: 1.0e+9
+
+  ppo_epoch: 4
+  lr: 3.0e-4
+  critic_lr: 3.0e-4
+  max_grad_norm: 5.0
+  entropy_coef: 0.01
+  gamma: 0.998
+  gae_lambda: 0.95
+  weight_decay: 1.0e-6
+
+  use_wandb: False
+  wandb_project: ramp-use
+  wandb_group: ramp-use
+  wandb_name: ramp-use-iter0
+
+  # seed should not be changed throughout iterations
+  seed: 1
+  seed_specify: True
+
+  warmup_fraction: 0.0
+
+  n_iterations: 1
+
+policy:
+  type: hide-and-seek-paper
+
+environment:
+  type: ramp_use

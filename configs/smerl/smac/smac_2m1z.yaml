@@ -1,0 +1,48 @@
+# cent state stack 4 = 72
+base:
+  num_train_envs: 16
+  n_rollout_threads: 16
+  num_eval_envs: 8
+  eval_episode_length: 200
+  eval_interval: 50
+  n_eval_rollout_threads: 8
+  num_env_splits: 2
+
+  episode_length: 400
+  num_env_steps: 20.0e+6
+  ppo_epoch: 10
+
+  use_wandb: False
+  wandb_project: smerl-smac
+  wandb_group: 2m1z
+
+  # seed should not be changed throughout iterations
+  seed: 1
+  seed_specify: True
+
+  intrinsic_reward_scaling: 1.0
+  smerl_threshold: 10.0
+
+policy:
+  type: smerl
+  args:
+    hidden_dim: 64
+    num_dense_layers: 2
+    num_rnn_layers: 1
+    latent_dim: 4
+
+environment:
+  type: smac
+  args:
+    base:
+      map_name: 2m_vs_1z
+      frame_stack: True
+      num_stack: 4
+      stack_key: cent_state
+      latent_dim: 4
+      latent_concat_keys:
+        - obs
+        - state
+    eval:
+      save_replay: False
+      replay_dir: /home/fw/smac_replays_iclr2023/2c_vs_64zg/
